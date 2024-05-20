@@ -1,4 +1,5 @@
 import re
+from info import info
 
 
 def validate(plate_number):
