@@ -1,7 +1,5 @@
+from datetime import datetime
 
-
-file = open('output.txt', 'a')
-
-file.write("hello")
-
-file.close()
+currentTime = datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
+fileName = f"vrpr_{currentTime}"
+print(fileName)

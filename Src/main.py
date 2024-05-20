@@ -6,17 +6,28 @@ import cv2 as cv
 import easyocr
 from config import api_keys
 from Utils.sort import *
-import cvzone
+from datetime import datetime
+
+
 
 from validate import validate
 
+cap = cv.VideoCapture("../Videos/shona2.mp4")
+
+if not cap.isOpened():
+    print("No source found!!")
+    exit()
+
 api_key = api_keys[0]
 reader = easyocr.Reader(['en'])
-cap = cv.VideoCapture("../Videos/shona2.mp4")
 model = YOLO("../Train/runs/detect/train/weights/best.pt")
 output_file = "output.txt"
 tracker = Sort()
 currentId = 0
+
+currentTime = datetime.now().strftime('%Y_%m_%d_%H_%M_%S')
+fileName = f"output/vrpr_{currentTime}.txt"
+
 while True:
     success, img = cap.read()
     if success:
@@ -48,16 +59,15 @@ while True:
             try:
                 plate_number = text[0][1]
                 if validate(plate_number) and id > currentId:
-                    with open(output_file, 'a') as file:
+                    with open(fileName, 'w') as file:
                         file.write(f"{id}, {plate_number}\n")
                         currentId = id
-                    cv.waitKey(0)
 
-            except Exception:
+            except IndexError:
                 print("Plate number not found.")
-
-            cv.imshow("roi", roi)
-            cv.imshow("main", img)
+   
+            # cv.imshow("roi", roi)
+            # cv.imshow("main", img)
 
     else:
         print("End")
