@@ -4,8 +4,7 @@
 /DataSet/
 .idea/
 /Train/runs/
-*.pt
-/Src/output.txt
-/Src/config.py
+/config/
 __pycache__/
 /Src/output/
+*.pt

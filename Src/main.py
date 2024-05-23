@@ -1,11 +1,14 @@
+from datetime import datetime
+
 from ultralytics import YOLO
 import cv2 as cv
 import easyocr
-from config import api_keys
 from Utils.sort import *
-from datetime import datetime
-
 from validate import validate
+
+import os
+
+
 
 cap = cv.VideoCapture("../Videos/shona2.mp4")
 
@@ -13,7 +16,7 @@ if not cap.isOpened():
     print("No source found!!")
     exit()
 
-api_key = api_keys[0]
+# api_key = api_keys[0]
 reader = easyocr.Reader(['en'])
 model = YOLO("../Train/runs/detect/train/weights/best.pt")
 tracker = Sort()
@@ -58,7 +61,7 @@ while True:
 
             except IndexError:
                 print("Plate number not found.")
-   
+
             # cv.imshow("roi", roi)
             # cv.imshow("main", img)
 
