@@ -6,10 +6,6 @@ import easyocr
 from Utils.sort import *
 from validate import validate
 
-import os
-
-
-
 cap = cv.VideoCapture("../Videos/shona2.mp4")
 
 if not cap.isOpened():
@@ -62,8 +58,8 @@ while True:
             except IndexError:
                 print("Plate number not found.")
 
-            # cv.imshow("roi", roi)
-            # cv.imshow("main", img)
+            cv.imshow("main", img)
+            cv.waitKey(1)
 
     else:
         print("End")
