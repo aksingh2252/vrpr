@@ -1,5 +1,3 @@
-from datetime import datetime
+import torch
 
-currentTime = datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
-fileName = f"vrpr_{currentTime}"
-print(fileName)
+print(torch.cuda.is_available())
