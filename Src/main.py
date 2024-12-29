@@ -6,26 +6,31 @@ import easyocr
 from Utils.sort import *
 from validate import validate
 
-cap = cv.VideoCapture("../Videos/edited_1_2.mp4")
-# cap = cv.VideoCapture(0)
-
-if not cap.isOpened():
-    print("No source found!!")
-    exit()
-
 # api_key = api_keys[0]
 reader = easyocr.Reader(['en'])
 model = YOLO("../Train/runs/detect/train/weights/best.pt")
 tracker = Sort()
 currentId = 0
 currentTime = datetime.now().strftime('%Y_%m_%d_%H_%M_%S')
-fileName = f"output/vrpr_{currentTime}.csv"
+
+csvFile = f"output/csv/vrpr_{currentTime}.csv"
+imgFile = f"output/img/vrpr_{currentTime}"
+
+cap = cv.VideoCapture("../Videos/shona2.mp4")
+# cap = cv.VideoCapture(0)
+
+if not cap.isOpened():
+    print("No source found!!")
+    exit()
 
 while True:
     success, img = cap.read()
     if success:
-        results = model(source=img, show=False, stream=False)
+
+        results = model(source=img, show=True, stream=False)
+
         detections = np.empty((0, 4))
+
         for result in results:
             boxes = result.boxes
             for box in boxes:
@@ -51,16 +56,18 @@ while True:
 
             try:
                 plate_number = text[0][1]
+                # validating the plate number using regular expression
                 if validate(plate_number) and obj_id > currentId:
-                    with open(fileName, 'w') as file:
-                        file.write(f"{obj_id}, {plate_number}\n")
+                    with open(csvFile, 'w') as file:
+                        cv.imwrite(imgFile + "_" + str(obj_id) + ".png", roi)
+                        file.write(f"{obj_id}, {plate_number}, {imgFile + '_' + str(obj_id) + '.png'}\n")
                         currentId = obj_id
 
             except IndexError:
                 print("Plate number not found.")
 
             # cv.imshow("roi", roi)
-            # cv.imshow("main", img)
+            cv.imshow("main", img)
 
     else:
         print("End")

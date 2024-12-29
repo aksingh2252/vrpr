@@ -11,7 +11,6 @@ def validate(plate_number):
         print(Style.RESET_ALL)
         # reg_info = info(plate_number, api_key=api_key)
         # print(reg_info)
-
         return True
 
     else:
